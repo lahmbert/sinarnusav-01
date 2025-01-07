@@ -3,10 +3,10 @@ import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [remember, setRemember] = useState(0);
+  const [remember, setRemember] = useState(false);
   const [isClient, setIsClient] = useState(false); // Track client rendering
   const router = useRouter();
 
@@ -19,13 +19,42 @@ const LoginPage = () => {
     router.push('/auth/login');
   };
 
-  const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push('/auth/login');
-    // Handle login logic here
+
+    if (!username || !password) {
+      alert('Please fill in both username and password.');
+      return;
+    }
+
+    if (password.length < 6) {
+      alert('Password must be at least 6 characters long.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, remember }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Registration failed');
+      }
+
+      const data = await response.json();
+      // Redirect after successful registration
+      router.push('/auth/login');
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An unexpected error occurred.');
+      }
+    }
   };
 
-  // Only render content when on the client
   if (!isClient) {
     return null;
   }
@@ -40,7 +69,7 @@ const LoginPage = () => {
               <div className="sm:flex justify-between w-full">
                 <div className="w-full p-8 bg-gradient-to-tl from-blue-500 flex sm:hidden items-center justify-center flex-col gap-4 text-white to-cyan-500">
                   <div className="text-3xl font-bold">Welcome to Sign Up</div>
-                  <span>Have an account?</span>
+                  <span>Already have an account?</span>
                   <button
                     onClick={handleLogin}
                     className="capitalize p-2 px-6 rounded-full border bg-transparent border-white hover:text-black hover:bg-white"
@@ -79,24 +108,6 @@ const LoginPage = () => {
                         className="rounded-full focus:outline-none text-sm font-medium p-2 bg-slate-200"
                       />
                     </div>
-                    <div className="flex gap-1 pl-2 my-6 items-center">
-                      <div className="gap-1 flex">
-                        <input
-                          checked={remember === 1}
-                          onChange={() => setRemember(remember === 1 ? 0 : 1)}
-                          type="checkbox"
-                          id="agree"
-                          className="w-[0.9rem]"
-                          name="agree"
-                        />
-                        <label htmlFor="agree" className="flex gap-1">
-                          Agree with
-                          <p className="cursor-pointer text-blue-500">
-                            term of service.
-                          </p>
-                        </label>
-                      </div>
-                    </div>
                     <div>
                       <button
                         type="submit"
@@ -108,8 +119,8 @@ const LoginPage = () => {
                   </form>
                 </div>
                 <div className="w-full p-8 bg-gradient-to-tl from-blue-500 sm:flex hidden items-center justify-center flex-col gap-4 text-white to-cyan-500">
-                  <div className="text-3xl font-bold">Welcome to Sign In</div>
-                  <span>Don't have an account?</span>
+                  <div className="text-3xl font-bold">Welcome to Sign Up</div>
+                  <span>Already have an account?</span>
                   <button
                     onClick={handleLogin}
                     className="capitalize p-2 px-6 rounded-full border bg-transparent border-white hover:text-black hover:bg-white"
@@ -126,4 +137,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

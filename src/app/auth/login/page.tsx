@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [remember, setRemember] = useState(0);
+  const [remember, setRemember] = useState(false);
   const [isClient, setIsClient] = useState(false); // Track client rendering
   const router = useRouter();
 
@@ -19,13 +19,39 @@ const LoginPage = () => {
     router.push('/auth/register');
   };
 
-  const handleSubmitLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push('/');
-    // Handle login logic here
+
+    if (!username || !password) {
+      alert('Please fill in both username and password.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, remember }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid credentials');
+      }
+
+      const data = await response.json();
+      // Simpan token atau status login
+      localStorage.setItem('token', data.token);
+
+      router.push('/'); // Redirect setelah berhasil login
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An unexpected error occurred.');
+      }
+    }
   };
 
-  // Only render content when on the client
   if (!isClient) {
     return null;
   }
@@ -90,8 +116,8 @@ const LoginPage = () => {
                     <div className="flex mt-4 justify-between items-center">
                       <div className="gap-1 flex">
                         <input
-                          checked={remember === 1}
-                          onChange={() => setRemember(remember === 1 ? 0 : 1)}
+                          checked={remember}
+                          onChange={() => setRemember(!remember)}
                           type="checkbox"
                           id="remember"
                           className="w-[0.9rem]"
