@@ -19,7 +19,7 @@ const LoginPage = () => {
     router.push('/auth/register');
   };
 
-  const handleSubmitLogin = (e: any) => {
+  const handleSubmitLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     router.push('/');
     // Handle login logic here
