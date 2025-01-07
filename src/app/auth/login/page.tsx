@@ -66,7 +66,8 @@ const LoginPage = () => {
               <div className="sm:flex justify-between w-full">
                 <div className="w-full p-8 bg-gradient-to-tl from-blue-500 flex sm:hidden items-center justify-center flex-col gap-4 text-white to-cyan-500">
                   <div className="text-3xl font-bold">Welcome to login</div>
-                  <span>Don't have an account?</span>
+                  <span>Don&apos;t have an account?</span>
+
                   <button
                     onClick={handleRegister}
                     className="capitalize p-2 px-6 rounded-full border bg-transparent border-white hover:text-black hover:bg-white"
