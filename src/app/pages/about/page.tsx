@@ -21,9 +21,15 @@ const Homepage = () => {
         </section>
 
         {/* Our Categories Section */}
-        <section className="-translate-y-10 pb-[8rem] flex justify-between px-4 sm:px-[5rem] lg:px-[10rem]">
+        <section className="-translate-y-10 pb-[8rem] flex flex-col sm:flex-row sm:justify-between px-4 sm:px-[5rem] lg:px-[10rem]">
+          <div className="sm:hidden flex justify-center w-[80%] text-center mx-auto mb-10 border-4 border-slate-400 sm:mx-10 sm:mt-10 h-[30%]">
+            <img
+              className="translate-x-3 hover:translate-x-8 hover:-translate-y-8 duration-500 -translate-y-3"
+              src="/img/about-01.jpg"
+            />
+          </div>
           <div>
-            <span className="text-[2rem] font-extrabold text-gray-800">
+            <span className="text-[2rem] flex sm:justify-start justify-center font-extrabold text-gray-800">
               Our Story
             </span>
             <p className="py-8 text-slate-600">
@@ -41,7 +47,7 @@ const Homepage = () => {
               sinarnusa.id@gmail.com
             </p>
           </div>
-          <div className="flex justify-center w-[150%] border-4 border-slate-400 sm:mx-10 sm:mt-10 h-[30%]">
+          <div className="sm:flex hidden justify-center w-[150%] border-4 border-slate-400 sm:mx-10 sm:mt-10 h-[30%]">
             <img
               className="translate-x-3 hover:translate-x-8 hover:-translate-y-8 duration-500 -translate-y-3"
               src="/img/about-01.jpg"

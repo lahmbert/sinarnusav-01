@@ -72,10 +72,10 @@ const Navbar = () => {
             className={`${
               isScrolled
                 ? 'text-blue-500 border border-blue-500 p-2 px-8 rounded-full hover:bg-blue-500 hover:text-white duration-200'
-                : 'text-white bg-blue-500 border-slate-50 p-2 px-8 rounded-full hover:bg-blue-500 hover:text-white duration-200'
+                : 'text-white bg-blue-500 border-slate-50 p-2 px-8 rounded-full hover:bg-blue-800 hover:text-white duration-200'
             }`}
           >
-            login
+            Login
           </Link>
         </div>
       </div>
